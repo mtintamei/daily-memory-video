@@ -1,40 +1,24 @@
 from app.drive import DriveClient
-
-SUPPORTED_TYPES = (
-    "image/",
-    "video/",
-)
+from app.collector import Collector
 
 
 def main():
+
     drive = DriveClient()
 
-    root = drive.find_folder("DailyMemory")
+    collector = Collector(drive)
 
-    if not root:
-        print("❌ DailyMemory folder not found.")
-        return
+    downloaded = collector.collect()
 
-    print(f"✅ Found folder: {root['name']}")
+    print()
 
-    incoming = drive.find_folder(
-        "Incoming",
-        root["id"]
-    )
+    print("Downloaded files:")
 
-    if not incoming:
-        print("❌ Incoming folder not found.")
-        return
+    for file in downloaded:
+        print(file.name)
 
-    print(f"✅ Found folder: {incoming['name']}")
-
-    print("\nMedia files:\n")
-
-    files = drive.list_files(incoming["id"])
-
-    for file in files:
-        if file["mimeType"].startswith(SUPPORTED_TYPES):
-            print(f"{file['name']} ({file['mimeType']})")
+    print()
+    print(f"Downloaded {len(downloaded)} files.")
 
 
 if __name__ == "__main__":

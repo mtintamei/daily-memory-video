@@ -1,3 +1,6 @@
+import io
+from googleapiclient.http import MediaIoBaseDownload
+
 from pathlib import Path
 
 from google.auth.transport.requests import Request
@@ -81,5 +84,15 @@ class DriveClient:
         ).execute()
 
         return response.get("files", [])
+    def download_file(self, file_id, destination):
+        request = self.service.files().get_media(fileId=file_id)
+
+        with open(destination, "wb") as fh:
+            downloader = MediaIoBaseDownload(fh, request)
+
+            done = False
+
+            while not done:
+                status, done = downloader.next_chunk()
     
     
