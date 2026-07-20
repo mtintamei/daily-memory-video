@@ -49,3 +49,37 @@ class DriveClient:
         ).execute()
 
         return results.get("files", [])
+
+
+    def find_folder(self, folder_name, parent_id=None):
+        query = (
+            f"name='{folder_name}' "
+            "and mimeType='application/vnd.google-apps.folder' "
+            "and trashed=false"
+        )
+
+        if parent_id:
+            query += f" and '{parent_id}' in parents"
+
+        response = self.service.files().list(
+            q=query,
+            fields="files(id,name)"
+        ).execute()
+
+        folders = response.get("files", [])
+
+        if not folders:
+            return None
+
+        return folders[0]
+
+
+    def list_files(self, folder_id):
+        response = self.service.files().list(
+            q=f"'{folder_id}' in parents and trashed=false",
+            fields="files(id,name,mimeType)"
+        ).execute()
+
+        return response.get("files", [])
+    
+    
