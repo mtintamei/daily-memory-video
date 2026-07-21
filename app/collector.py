@@ -31,14 +31,20 @@ class Collector:
 
         for file in files:
 
-            if self.state.should_download(file["id"]) is False:
-                print(f"Skipping {file['name']} (already downloaded)")
-                continue
-
             if not file["mimeType"].startswith(SUPPORTED_TYPES):
                 continue
 
             destination = INCOMING / file["name"]
+
+            if not self.state.should_download(file["id"]):
+                print(f"Skipping {file['name']} (already downloaded)")
+
+                downloaded.append({
+                    "id": file["id"],
+                    "path": destination
+                })
+
+                continue
 
             print(f"Downloading {file['name']}...")
 
@@ -53,6 +59,9 @@ class Collector:
                 destination
             )
 
-            downloaded.append(destination)
+            downloaded.append({
+                "id": file["id"],
+                "path": destination
+            })
 
         return downloaded

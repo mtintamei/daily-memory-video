@@ -23,6 +23,7 @@ protobuf==7.35.1
 pyasn1==0.6.4
 pyasn1_modules==0.4.2
 pycparser==3.0
+pymediainfo==7.0.1
 pyparsing==3.3.2
 python-dotenv==1.2.2
 PyYAML==6.0.3
