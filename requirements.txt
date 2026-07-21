@@ -3,6 +3,7 @@ cffi==2.1.0
 charset-normalizer==3.4.9
 colorama==0.4.6
 cryptography==49.0.0
+decorator==5.3.1
 ExifRead==3.5.1
 ffmpeg-python==0.2.0
 future==1.0.0
@@ -16,8 +17,13 @@ google-auth-oauthlib==1.4.0
 googleapis-common-protos==1.75.0
 httplib2==0.32.0
 idna==3.18
+ImageIO==2.37.4
+imageio-ffmpeg==0.6.0
+moviepy==2.2.1
+numpy==2.4.6
 oauthlib==3.3.1
-pillow==12.3.0
+pillow==11.3.0
+proglog==0.1.12
 proto-plus==1.28.1
 protobuf==7.35.1
 pyasn1==0.6.4

@@ -2,6 +2,8 @@ from app.drive import DriveClient
 from app.collector import Collector
 from app.metadata.extractor import MetadataExtractor
 from app.timeline.builder import TimelineBuilder
+from app.ffmpeg.normalize import Normalizer
+from app.renderer.renderer import Renderer
 from app.models import MediaItem
 
 
@@ -19,6 +21,8 @@ def main():
     collector = Collector(drive)
     extractor = MetadataExtractor()
     timeline = TimelineBuilder()
+    normalizer = Normalizer()
+    renderer = Renderer()
 
     downloaded = collector.collect()
 
@@ -42,16 +46,13 @@ def main():
             media_type=media_type,
         )
 
-        media_items.append(
-            extractor.extract(item)
-        )
+        media_items.append(extractor.extract(item))
 
     media_items = timeline.build(media_items)
 
-    print("\nTimeline\n")
+    media_items = normalizer.normalize(media_items)
 
-    for item in media_items:
-        print(item)
+    renderer.render(media_items)
 
 
 if __name__ == "__main__":
