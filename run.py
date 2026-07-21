@@ -1,5 +1,6 @@
 from app.drive import DriveClient
 from app.collector import Collector
+from app.metadata import MetadataExtractor
 
 
 def main():
@@ -8,17 +9,19 @@ def main():
 
     collector = Collector(drive)
 
+    extractor = MetadataExtractor()
+
     downloaded = collector.collect()
 
     print()
 
-    print("Downloaded files:")
+    print("Media Items\n")
 
     for file in downloaded:
-        print(file.name)
 
-    print()
-    print(f"Downloaded {len(downloaded)} files.")
+        item = extractor.build_media_item(file)
+
+        print(item)
 
 
 if __name__ == "__main__":

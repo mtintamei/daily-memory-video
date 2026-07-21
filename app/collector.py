@@ -1,3 +1,4 @@
+from app.state import StateManager
 from app.config import INCOMING, SUPPORTED_TYPES
 
 
@@ -5,6 +6,7 @@ class Collector:
 
     def __init__(self, drive):
         self.drive = drive
+        self.state = StateManager()
 
     def collect(self):
 
@@ -29,6 +31,10 @@ class Collector:
 
         for file in files:
 
+            if self.state.should_download(file["id"]) is False:
+                print(f"Skipping {file['name']} (already downloaded)")
+                continue
+
             if not file["mimeType"].startswith(SUPPORTED_TYPES):
                 continue
 
@@ -38,6 +44,12 @@ class Collector:
 
             self.drive.download_file(
                 file["id"],
+                destination
+            )
+
+            self.state.mark_downloaded(
+                file["id"],
+                file["name"],
                 destination
             )
 
